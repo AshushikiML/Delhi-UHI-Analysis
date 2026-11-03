@@ -2,58 +2,66 @@
 
 ### Relationship Between Land Surface Temperature, Vegetation and Urbanization
 
-## Overview
+## 1. Overview
 
-This project investigates the spatial distribution of Land Surface Temperature (LST) across Delhi and examines its relationship with vegetation cover and built-up characteristics using satellite-derived indices.
+This project investigates the spatial distribution of Land Surface Temperature (LST) across Delhi and examines its association with vegetation cover and built-up characteristics using satellite-derived spectral indices.
 
-The analysis uses Landsat 8 Collection 2 Level-2 imagery for April–June 2025. Statistical techniques, including correlation analysis and linear regression, are used to examine the associations between LST, the Normalized Difference Vegetation Index (NDVI), and the Normalized Difference Built-up Index (NDBI).
+Landsat 8 Collection 2 Level-2 imagery for April–June 2025 was processed using Google Earth Engine. Python-based spatial and statistical analysis was subsequently performed to explore the relationships between LST, the Normalized Difference Vegetation Index (NDVI), and the Normalized Difference Built-up Index (NDBI).
 
-## Research Objective
+## 2. Research Objective
 
 To investigate how spatial variations in vegetation and built-up characteristics are associated with land surface temperature across Delhi.
 
-## Data and Tools
+## 3. Data and Tools
 
-**Satellite data:** Landsat 8 Collection 2 Level-2  
 **Study area:** Delhi, India  
-**Study period:** April–June 2025
+**Satellite data:** Landsat 8 Collection 2 Level-2  
+**Study period:** 1 April – 30 June 2025
 
 **Tools and libraries:**
 - Google Earth Engine
-- Python
-- Google Colab
+- Python and Google Colab
 - NumPy and Pandas
 - Matplotlib and Seaborn
 - Rasterio
-- Scikit-learn / Statsmodels
+- Statsmodels and Scikit-learn
 
-## Methodology
+## 4. Methodology
 
-### 1. Land Surface Temperature (LST)
+### 4.1 Land Surface Temperature (LST)
 
-LST was derived from the Landsat 8 thermal band (ST_B10), applying the appropriate scale factor and converting Kelvin to degrees Celsius.
+Land Surface Temperature was derived from the Landsat 8 thermal band (ST_B10) using the Collection 2 Level-2 scale factor and offset.
 
-### 2. Normalized Difference Vegetation Index (NDVI)
+LST (°C) = (ST_B10 × 0.00341802 + 149) − 273.15
 
-NDVI was calculated using scaled near-infrared and red surface reflectance:
+### 4.2 Normalized Difference Vegetation Index (NDVI)
+
+NDVI was calculated using scaled near-infrared (NIR) and red surface reflectance:
 
 NDVI = (NIR − Red) / (NIR + Red)
 
-Higher NDVI values generally indicate greater vegetation density.
+Higher NDVI values generally indicate greater vegetation cover.
 
-### 3. Normalized Difference Built-up Index (NDBI)
+### 4.3 Normalized Difference Built-up Index (NDBI)
 
-NDBI was calculated using scaled shortwave-infrared and near-infrared surface reflectance:
+NDBI was calculated using scaled shortwave-infrared (SWIR) and near-infrared (NIR) surface reflectance:
 
 NDBI = (SWIR − NIR) / (SWIR + NIR)
 
-Higher NDBI values generally indicate stronger built-up characteristics.
+Higher NDBI values generally indicate stronger built-up characteristics, although the index is not an exclusive measure of urban land cover.
 
-### 4. Statistical Analysis
+### 4.4 Spatial and Statistical Analysis
 
-Pearson correlation and linear regression were used to examine relationships between LST, NDVI and NDBI. A multiple linear regression model was also fitted using both indices as predictors.
+The exported raster datasets were aligned to a common spatial grid and combined for pixel-level analysis.
 
-## Key Results
+The following statistical methods were applied:
+- Descriptive statistical analysis
+- Pearson correlation analysis
+- Simple linear regression
+- Multiple linear regression
+- Quartile-based analysis
+
+## 5. Key Results
 
 | Parameter | Result |
 |---|---:|
@@ -66,31 +74,42 @@ Pearson correlation and linear regression were used to examine relationships bet
 
 ### Interpretation
 
-- NDVI exhibited a moderate negative association with LST, suggesting that areas with greater vegetation cover tended to have lower surface temperatures.
-- NDBI showed a positive association with LST, indicating that areas with stronger built-up characteristics tended to have higher surface temperatures.
-- NDBI demonstrated a stronger individual correlation with LST than NDVI.
-- The multiple regression model using NDVI and NDBI explained approximately 42.7% of the observed variation in LST.
+- NDVI exhibited a moderate negative association with LST (r = -0.463), suggesting that areas with greater vegetation cover tended to have lower surface temperatures.
+- NDBI showed a positive association with LST (r = +0.645), indicating that areas with stronger built-up characteristics tended to have higher surface temperatures.
+- NDBI demonstrated a stronger individual linear association with LST than NDVI.
+- The multiple regression model incorporating NDVI and NDBI explained approximately 42.7% of the observed variation in LST.
 
-## Spatial Visualisations
+## 6. Spatial Visualisations
 
-The `figures/` directory contains:
-- Land Surface Temperature map
-- NDVI spatial distribution map
-- NDBI spatial distribution map
-- Correlation heatmap
-- Regression scatterplots
-- Quartile analysis plots
+### Land Surface Temperature
+![LST Spatial Map](figures/LST_Spatial_Map.png)
 
-## Limitations
+### Vegetation Distribution (NDVI)
+![NDVI Spatial Map](figures/NDVI_Spatial_Map.png)
 
-- The analysis covers a limited seasonal period (April–June 2025).
-- Land Surface Temperature is not equivalent to near-surface air temperature.
-- Spatial autocorrelation between neighbouring satellite pixels may affect conventional regression assumptions.
+### Built-up Characteristics (NDBI)
+![NDBI Spatial Map](figures/NDBI_Spatial_Map.png)
+
+### Statistical Visualisations
+
+See the `figures/` directory for the correlation heatmap, regression plots and quartile analysis visualisations.
+
+## 7. Limitations
+
+- The analysis is restricted to the April–June 2025 observation period.
+- Satellite-derived LST represents surface temperature, not near-surface air temperature.
+- Spatial autocorrelation between neighbouring pixels may violate the independence assumption of conventional ordinary least squares regression.
+- Consequently, regression coefficients and explanatory power are interpreted cautiously, without relying solely on conventional p-values.
 - The analysis identifies statistical associations and does not establish causal relationships.
-- A rural reference comparison would be required for a more direct assessment of urban heat island intensity.
+- A comparison with suitable rural reference areas would be required for a more direct assessment of urban heat island intensity.
 
-## Conclusion
+## 8. Conclusion
 
-The analysis identifies meaningful spatial associations between land surface temperature, vegetation and built-up characteristics across Delhi. The findings suggest that vegetation and urban surface characteristics are important factors associated with spatial variations in surface heating.
+The analysis identifies meaningful spatial associations between land surface temperature, vegetation and built-up characteristics across Delhi. The observed negative association between NDVI and LST and positive association between NDBI and LST highlight the relevance of vegetation and urban surface characteristics in understanding spatial variations in surface heating.
 
+## 9. Repository Contents
+
+- `Delhi_UHI_Analysis.ipynb` – Python-based spatial and statistical analysis.
+- `gee/landsat_processing.js` – Google Earth Engine processing script.
+- `figures/` – Spatial maps and statistical visualisations.
 
